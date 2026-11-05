@@ -1,0 +1,5 @@
+minigrid
+stable-baselines3
+pandas
+matplotlib
+tabulate
