@@ -44,7 +44,7 @@ Full tables: [results/](results/). Detailed answers: [notes.md](notes.md).
 ## Limitations
 
 - Small, simple environment; 5 seeds; one prompt; one LLM.
-- The LLM rewards are used exactly as generated, with no code fix. For example, llm_1 shapes with `Φ(s') − Φ(s)` instead of `γΦ(s') − Φ(s)`.
+- The LLM rewards are used exactly as generated, with no code fix.
 - The shaped bonus is not logged during training, so reward hacking is judged from success rates, episode lengths and the reward code.
 
 ## How to reproduce
