@@ -1,0 +1,8 @@
+{
+  "env": "MiniGrid-DoorKey-5x5-v0",
+  "reward": "llm_1",
+  "seed": 4,
+  "steps": 200000,
+  "eval_success_rate": 0.38,
+  "eval_mean_length": 159.13
+}

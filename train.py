@@ -68,7 +68,7 @@ def main():
     parser.add_argument("--reward", default="sparse", help="sparse, handmade, llm_1, ...")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--env", default="MiniGrid-DoorKey-5x5-v0")
-    parser.add_argument("--steps", type=int, default=300_000)
+    parser.add_argument("--steps", type=int, default=200_000)
     args = parser.parse_args()
     
     run_name = f"{args.env}/{args.reward}/seed{args.seed}"

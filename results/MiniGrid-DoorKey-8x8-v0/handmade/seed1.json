@@ -1,0 +1,8 @@
+{
+  "env": "MiniGrid-DoorKey-8x8-v0",
+  "reward": "handmade",
+  "seed": 1,
+  "steps": 600000,
+  "eval_success_rate": 0.92,
+  "eval_mean_length": 67.73
+}
