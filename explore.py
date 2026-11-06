@@ -15,7 +15,7 @@ print(base)
 print("Image observation shape:", obs["image"].shape)
 print("Actions:", [a.name for a in base.actions])
 print("Max steps per episode:", base.max_steps)
-print("Flat obserbation size:", FlatObsWrapper(env).observation_space.shape)
+print("Flat observation size:", FlatObsWrapper(env).observation_space.shape)
 
 # A random agent, to see how hard the sparse reward is
 n_episodes = 200

@@ -1,35 +1,24 @@
-# handmade
-(.venv) derrohmaxime@MacBookPro llm-rewards-minigrid % python check_reward.py handmade     
-Mean bonus per episode (random agent): 0.276
-Largest bonus in one episode: 0.400
-Largest bonus in one step (absolute): 0.200
-WARNING: a random agent can collect more than 1.0 of bonus in one episode.
-The agent may learn to farm the bonus instead of solving the task (reward hacking).)
-Keep this reward anyway and note it: it is an interesting result.
+# Results
 
-# llm_1
-(.venv) derrohmaxime@MacBookPro llm-rewards-minigrid % python check_reward.py llm_1   
-Mean bonus per episode (random agent): 0.401
-Largest bonus in one episode: 0.600
-Largest bonus in one step (absolute): 0.380
-WARNING: a random agent can collect more than 1.0 of bonus in one episode.
-The agent may learn to farm the bonus instead of solving the task (reward hacking).)
-Keep this reward anyway and note it: it is an interesting result.
+PPO on MiniGrid DoorKey, 5 seeds per reward (5x5: 200k steps, 8x8: 600k steps).
+*Steps to 80%*: training steps until the rolling success rate (100 episodes) reaches 80%, mean over seeds.
+*Eval*: success rate of the deterministic policy on 100 unseen layouts.
 
-# llm_2
-(.venv) derrohmaxime@MacBookPro llm-rewards-minigrid % python check_reward.py llm_2
-Mean bonus per episode (random agent): 0.193
-Largest bonus in one episode: 0.330
-Largest bonus in one step (absolute): 0.120
-WARNING: a random agent can collect more than 1.0 of bonus in one episode.
-The agent may learn to farm the bonus instead of solving the task (reward hacking).)
-Keep this reward anyway and note it: it is an interesting result.
+| Reward   | 5x5 steps to 80% | 5x5 eval  | 8x8 steps to 80%  | 8x8 eval  |
+|----------|-----------------:|----------:|------------------:|----------:|
+| sparse   | 28k              | 99 ± 2 %  | 216k (1/5 seeds)  | 18 ± 35 % |
+| handmade | 16.8k            | 99 ± 2 %  | 86.4k             | 91 ± 6 %  |
+| llm_1    | 16.8k            | 84 ± 23 % | 99.6k             | 79 ± 11 % |
+| llm_2    | 16k              | 79 ± 28 % | 81.6k             | 90 ± 7 %  |
+| llm_3    | 14.4k            | 99 ± 1 %  | 70.8k             | 89 ± 3 %  |
 
-# llm_3
-(.venv) derrohmaxime@MacBookPro llm-rewards-minigrid % python check_reward.py llm_3
-Mean bonus per episode (random agent): 0.321
-Largest bonus in one episode: 0.785
-Largest bonus in one step (absolute): 0.305
-WARNING: a random agent can collect more than 1.0 of bonus in one episode.
-The agent may learn to farm the bonus instead of solving the task (reward hacking).)
-Keep this reward anyway and note it: it is an interesting result.
+**1. LLM rewards vs. sparse.** All three learn faster: 40–49 % fewer steps on 5x5. On 8x8, sparse learns with only 1 seed out of 5, while every LLM reward learns with all 5.
+
+**2. LLM rewards vs. handmade.** Comparable. llm_3 learns faster on both grids with the same final success. llm_2 is about equal. llm_1 is slower on 8x8 and less reliable at evaluation.
+
+**3. Consistency across LLM samples.** During training the three are close; all reach 100 % success. The ranking is the same on both grids (llm_3 > llm_2 > llm_1). The same prompt thus yields rewards of different quality, but with 5 seeds only the llm_3 / llm_1 gap is clear.
+
+**4. Reward hacking.** None observed. Three 5x5 runs have a low eval score (llm_1 seed 4: 38 %; llm_2 seeds 1 and 2: 32 % and 63 %). These same runs solve 100 % of their training episodes in about 11 steps. The failures come from evaluation instead: on unseen layouts, the deterministic policy can loop until the time limit. The reward code also leaves nothing to farm: key and door bonuses are paid once, llm_2 only rewards new distance records, and llm_3 caps the total bonus. One caveat: llm_1 uses `Φ(s') − Φ(s)` instead of `γΦ(s') − Φ(s)`, so it is not strictly policy-invariant, though no effect is visible.
+*Limitation:* the shaped bonus is not logged during training, so this conclusion relies on success rates, episode lengths and the reward code.
+
+**5. 8x8 grid.** All shaped rewards still work (5/5 seeds, 79–91 % eval), while sparse fails with 4 seeds out of 5. Shaping matters more as exploration gets harder.

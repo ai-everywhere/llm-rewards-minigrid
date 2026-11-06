@@ -1,5 +1,5 @@
 """
-Run every reward with every seed. Runs that already have a result are skipped, so script can be stopped and restarted late
+Run every reward with every seed. Runs that already have a result are skipped, so the script can be stopped and restarted later.
 
 Examples:
     python run_all.py

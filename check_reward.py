@@ -35,9 +35,9 @@ def main():
     print(f"Mean bonus per episode (random agent): {sum(totals) / len(totals):.3f}")
     print(f"Largest bonus in one episode: {max(totals):.3f}")
     print(f"Largest bonus in one step (absolute): {largest_step:.3f}")
-    print("WARNING: a random agent can collect more than 1.0 of bonus in one episode.")
-    print("The agent may learn to farm the bonus instead of solving the task (reward hacking).)")
-    print("Keep this reward anyway and note it: it is an interesting result.")
+    if max(totals) > 1.0:
+        print("WARNING: a random agent can collect more than 1.0 of bonus in one episode.")
+        print("The agent may learn to farm the bonus instead of solving the task (reward hacking).")
     
     
 if __name__ == "__main__":
